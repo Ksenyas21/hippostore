@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/template-rx-site.iml" filepath="$PROJECT_DIR$/.idea/template-rx-site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../hippostore/.idea/hippostore.iml" filepath="$PROJECT_DIR$/../hippostore/.idea/hippostore.iml" />
     </modules>
   </component>
 </project>
