@@ -23,9 +23,10 @@ const yourOwnAndPurchased: Access = async ({ req }) => {
         }
     })
     const ownProductFileIds = products.map((prod) => prod.product_files).flat()
+
     const { docs: orders } =  await req.payload.find({
         collection: 'orders',
-        depth: 0,
+        depth: 2,
         where: {
             user: {
                 equals: user.id
@@ -66,7 +67,10 @@ export const ProductFiles: CollectionConfig = {
       beforeChange: [addUser]
     },
     access: {
-        read: () => true,
+        read: yourOwnAndPurchased,
+        update: ({ req }) => req.user?.role === "admin",
+        delete: ({ req }) => req.user?.role === "admin",
+
     },
     upload: {
         staticURL: '/product_files',
