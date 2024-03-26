@@ -6,10 +6,21 @@ import {formatPrice} from "@/lib/utils";
 import Link from "next/link";
 import {buttonVariants} from "@/components/ui/button";
 import Image from "next/image";
+import {useCart} from "@/hooks/use-cart";
+import {ScrollArea} from "@/components/ui/scroll-area";
+import CartItem from "@/components/CartItem";
+import {useEffect, useState} from "react";
 
 const Cart = () => {
+    const [isMounted, setIsMounted] = useState<boolean>(false);
 
-    const itemsCount = 0
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const { items} = useCart()
+    const itemsCount = items.length
+    const cartTotal = items.reduce((total, {product}) => total + product.price, 0)
     const fee = 1
     return(
         <Sheet>
@@ -18,7 +29,7 @@ const Cart = () => {
                     aria-hidden="true"
                     className="h-6 w-6 fllex-shrink-0 text-gray-400 group-hover:text-gray-500" />
                 <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                   {itemsCount}
+                   {isMounted ? itemsCount: (<div className="animate-spin">o</div>)}
                 </span>
             </SheetTrigger>
             <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
@@ -31,8 +42,11 @@ const Cart = () => {
                     itemsCount > 0 ? (
                         <>
                             <div className="flex w-full flx-col pr-6">
-                                {/*  TODO: card logic */}
-                                card items
+                                <ScrollArea>
+                                {items.map(({product}) => (
+                                    <CartItem key={product.id} product={product} />
+                                ))}
+                            </ScrollArea>
                             </div>
                             <div className="space-y-4 pr-6">
                                 <Separator />
@@ -47,7 +61,7 @@ const Cart = () => {
                                     </div>
                                     <div className="flex">
                                         <span className="flex-1">Total</span>
-                                        <span>{formatPrice(fee)}</span>
+                                        <span>{formatPrice(cartTotal + fee)}</span>
                                     </div>
                                 </div>
                                 <SheetFooter>

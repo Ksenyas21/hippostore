@@ -2,8 +2,11 @@
 
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
+import {useCart} from "@/hooks/use-cart";
+import {Product} from "@/payload-types";
 
-const AddCardButton = () => {
+const AddCartButton = ({ product }: {product: Product}) => {
+    const {addItem} = useCart();
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
     useEffect(() =>{
@@ -15,6 +18,7 @@ const AddCardButton = () => {
     },[isSuccess])
     return (
         <Button onClick={() => {
+            addItem(product)
             setIsSuccess(true)
 
         }} size="lg" className="w-full">
@@ -23,4 +27,4 @@ const AddCardButton = () => {
     )
 }
 
-export default AddCardButton;
+export default AddCartButton;
